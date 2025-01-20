@@ -6,31 +6,40 @@
 #    By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 16:44:44 by eel-abed          #+#    #+#              #
-#    Updated: 2025/01/18 16:46:07 by eel-abed         ###   ########.fr        #
+#    Updated: 2025/01/20 15:28:25 by eel-abed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -pthread
+SRCS = srcs/main.c \
+       srcs/init.c \
+       srcs/philosopher.c \
+       srcs/forks.c \
+       srcs/utils.c \
+       srcs/ft_atoi.c \
+       srcs/monitor.c
 
-SRCS = src/main.c src/philosopher.c src/utils.c src/monitor.c
 OBJS = $(SRCS:.c=.o)
-INCS = -Iinclude/
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -pthread
+RM = rm -rf
+
+all: $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ -I includes
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
-
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: all clean fclean re
