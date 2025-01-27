@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:49 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 16:01:54 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:29:11 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,12 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		// Prendre les fourchettes
 		take_forks(philo);
 
-		// Manger
 		eat(philo);
 
-		// Relâcher les fourchettes
 		release_forks(philo);
 
-		// Dormir et penser
 		print_status(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
 		print_status(philo, "is thinking");
@@ -44,4 +40,5 @@ void	eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->data->meal_lock);
 	ft_usleep(philo->data->time_to_eat);
+	
 }

@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:35 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 14:58:58 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:13:51 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ int	main(int argc, char **argv)
 	philos = init_philos(&data);
 	if (!philos)
 		return (1);
-	monitor(philos); // Lancer la surveillance
+	monitor(philos);
 	return (0);
 }

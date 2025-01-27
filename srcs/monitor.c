@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:10 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 15:23:28 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:56:12 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*monitor(void *arg)
 			if (get_time() - philos[i].last_meal > philos->data->time_to_die)
 			{
 				print_status(&philos[i], "died");
-				exit(0); // À adapter avec une variable de contrôle
+				exit(0);
 			}
 			if (philos->data->max_meals > 0 && 
 				philos[i].meals_eaten < philos->data->max_meals)
@@ -37,7 +37,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&philos->data->meal_lock);
 		}
 		if (all_full && philos->data->max_meals > 0)
-			exit(0); // À adapter
+			exit(0);
 		usleep(1000);
 	}
 	return (NULL);
