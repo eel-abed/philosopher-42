@@ -6,35 +6,76 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:03 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 15:23:16 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:30:55 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long	get_time(void)
+int	ft_atoi(const char *str)
+{
+	int	result;
+	int	sign;
+	int	i;
+
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
+}
+
+long	long	get_time(void)
 {
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	ft_usleep(long milliseconds)
+void	print_status(t_data *data, int id, char *status)
 {
-	long	start;
+	pthread_mutex_lock(&data->writing);
+	if (!data->dead)
+		printf("%lld %d %s\n", get_time() - data->start_time, id, status);
+	pthread_mutex_unlock(&data->writing);
+}
+
+void	smart_sleep(long long time, t_data *data)
+{
+	long long	start;
 
 	start = get_time();
-	while (get_time() - start < milliseconds)
+	while (!data->dead)
+	{
+		if (get_time() - start >= time)
+			break ;
 		usleep(100);
+	}
 }
 
-void	print_status(t_philo *philo, char *msg)
+int	check_death(t_data *data, t_philo *philo)
 {
-	long	timestamp;
-
-	pthread_mutex_lock(&philo->data->print_lock);
-	timestamp = get_time() - philo->data->start_time;
-	printf("%ld %d %s\n", timestamp, philo->id, msg);
-	pthread_mutex_unlock(&philo->data->print_lock);
+	pthread_mutex_lock(&data->meal_check);
+	if (get_time() - philo->last_meal > data->time_to_die)
+	{
+		print_status(data, philo->id, "died");
+		data->dead = 1;
+		pthread_mutex_unlock(&data->meal_check);
+		return (1);
+	}
+	pthread_mutex_unlock(&data->meal_check);
+	return (0);
 }

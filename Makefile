@@ -6,7 +6,7 @@
 #    By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 16:44:44 by eel-abed          #+#    #+#              #
-#    Updated: 2025/01/23 17:48:48 by eel-abed         ###   ########.fr        #
+#    Updated: 2025/01/30 19:26:01 by eel-abed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,9 @@ NAME = philo
 
 SRCS = srcs/main.c \
        srcs/init.c \
-       srcs/philosopher.c \
-       srcs/forks.c \
+       srcs/actions.c \
        srcs/utils.c \
-       srcs/ft_atoi.c \
        srcs/monitor.c
-
 OBJS = $(SRCS:.c=.o)
 
 CC = cc

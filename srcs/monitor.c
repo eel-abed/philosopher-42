@@ -6,49 +6,62 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:10 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/28 17:16:41 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:28:35 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void *monitor(void *arg)
+static	int	check_if_all_ate(t_data *data)
 {
-    t_philo *philos;
-    int     i;
-    int     all_full;
+	int i;
 
-    philos = (t_philo *)arg;
-    while (1)
-    {
-        i = -1;
-        all_full = 1;
-        while (++i < philos->data->num_philos)
-        {
-            pthread_mutex_lock(&philos->data->meal_lock);
-            if (get_time() - philos[i].last_meal > philos->data->time_to_die)
-            {
-                print_status(&philos[i], "died");
-                // Print meals eaten before exit
-                for (int j = 0; j < philos->data->num_philos; j++)
-                    printf("Philosopher %d ate %d meals\n", philos[j].id, philos[j].meals_eaten);
-                exit(0);
-            }
-            if (philos->data->max_meals > 0 && 
-                philos[i].meals_eaten < philos->data->max_meals)
-                all_full = 0;
-            pthread_mutex_unlock(&philos->data->meal_lock);
-        }
-        if (all_full && philos->data->max_meals > 0)
-        {
-            // Print meals eaten when all philosophers are full
-            pthread_mutex_lock(&philos->data->print_lock);
-            for (int j = 0; j < philos->data->num_philos; j++)
-                printf("Philosopher %d ate %d meals\n", philos[j].id, philos[j].meals_eaten);
-            pthread_mutex_unlock(&philos->data->print_lock);
-            exit(0);
-        }
-        usleep(1000);
-    }
-    return (NULL);
+	if (data->must_eat_count == -1)
+		return (0);
+	i = 0;
+	while (i < data->philo_count)
+	{
+		if (data->philos[i].ate_count < data->must_eat_count)
+			return (0);
+		i++;
+	}
+	data->dead = 1;
+	return (1);
+}
+
+void	*monitor_routine(void *arg)
+{
+	t_data *data;
+	int i;
+
+	data = (t_data *)arg;
+	while (!data->dead)
+	{
+		i = 0;
+		while (i < data->philo_count)
+		{
+			if (check_death(data, &data->philos[i]))
+				return (NULL);
+			i++;
+		}
+		if (check_if_all_ate(data))
+			break;
+		usleep(1000);
+	}
+	return (NULL);
+}
+
+void	print_meal_counts(t_data *data)
+{
+	int i;
+
+	printf("\n--- Final meal counts ---\n");
+	i = 0;
+	while (i < data->philo_count)
+	{
+		printf("Philosopher %d ate %d times\n",
+			   data->philos[i].id, data->philos[i].ate_count);
+		i++;
+	}
+	printf("------------------------\n");
 }

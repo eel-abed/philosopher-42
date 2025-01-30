@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:10 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 19:10:53 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:11:03 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,60 @@
 # define PHILO_H
 
 # include <stdio.h>
-# include <string.h>
-# include <malloc.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include <unistd.h>
 
-typedef struct s_data {
-	int				num_philos;
+typedef struct s_philo
+{
+	int				id;
+	int				ate_count;
+	int				left_fork;
+	int				right_fork;
+	long long		last_meal;
+	struct s_data	*data;
+	pthread_t		thread;
+}	t_philo;
+
+typedef struct s_data
+{
+	int				philo_count;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				max_meals;
-	long			start_time;
+	int				must_eat_count;
+	int				dead;
+	long long		start_time;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	print_lock;
-	pthread_mutex_t	meal_lock;
+	pthread_mutex_t	writing;
+	pthread_mutex_t	meal_check;
+	t_philo			*philos;
 }	t_data;
 
-typedef struct s_philo {
-	int				id;
-	pthread_t		thread;
-	long			last_meal;
-	int				meals_eaten;
-	t_data			*data;
-}	t_philo;
+/* init.c */
+int			init_data(t_data *data, int argc, char **argv);
+int			init_mutex(t_data *data);
+int			init_philos(t_data *data);
 
-// Initialisation
-int		init_data(t_data *data, int argc, char **argv);
-t_philo	*init_philos(t_data *data);
-int	ft_atoi(const char *str);
-void	take_forks(t_philo *philo);
-void	release_forks(t_philo *philo);
+/* utils.c */
+int			ft_atoi(const char *str);
+long long	get_time(void);
+void		print_status(t_data *data, int id, char *status);
+void		smart_sleep(long long time, t_data *data);
+int			check_death(t_data *data, t_philo *philo);
 
+/* routine.c */
+void		*philo_routine(void *arg);
+void		eat(t_philo *philo);
+void		sleep_think(t_philo *philo);
 
-// Utilitaires
-long	get_time(void);
-void	ft_usleep(long milliseconds);
-void	print_status(t_philo *philo, char *msg);
+/* main.c */
+int			start_simulation(t_data *data);
+void		end_simulation(t_data *data);
 
-// Philosophe
-void	*philo_routine(void *arg);
-void	eat(t_philo *philo);
-
-// Surveillance
-void	*monitor(void *arg);
+/* monitor.c */
+void		*monitor_routine(void *arg);
+void		print_meal_counts(t_data *data);
 
 #endif
