@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.c                                            :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:57 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/20 18:27:38 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:57:33 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ void	sleep_think(t_philo *philo)
 
 void	*philo_routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (!philo->data->dead)
 	{
-		if (philo->data->must_eat_count != -1 &&
-			philo->ate_count >= philo->data->must_eat_count)
-			break;
+		if (philo->data->must_eat_count != -1 && philo
+			->ate_count >= philo->data->must_eat_count)
+			break ;
 		eat(philo);
 		sleep_think(philo);
 	}

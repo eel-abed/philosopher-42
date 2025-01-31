@@ -6,13 +6,13 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:42 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/30 19:20:09 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:00:30 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int init_data(t_data *data, int argc, char **argv)
+int	init_data(t_data *data, int argc, char **argv)
 {
 	data->philo_count = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
@@ -22,14 +22,15 @@ int init_data(t_data *data, int argc, char **argv)
 	data->must_eat_count = -1;
 	if (argc == 6)
 		data->must_eat_count = ft_atoi(argv[5]);
-	if (data->philo_count < 1 || data->time_to_die < 0 || data->time_to_eat < 0 || data->time_to_sleep < 0 || (argc == 6 && data->must_eat_count < 0))
+	if (data->philo_count < 1 || data->time_to_die < 0 || data->time_to_eat < 0
+		|| data->time_to_sleep < 0 || (argc == 6 && data->must_eat_count < 0))
 		return (1);
 	return (0);
 }
 
-int init_mutex(t_data *data)
+int	init_mutex(t_data *data)
 {
-	int i;
+	int	i;
 
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_count);
 	if (!data->forks)
@@ -48,9 +49,9 @@ int init_mutex(t_data *data)
 	return (0);
 }
 
-int init_philos(t_data *data)
+int	init_philos(t_data *data)
 {
-	int i;
+	int	i;
 
 	data->philos = malloc(sizeof(t_philo) * data->philo_count);
 	if (!data->philos)
