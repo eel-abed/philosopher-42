@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:35 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/30 19:23:45 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:35:16 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	start_simulation(t_data *data)
 {
-	int i;
-	pthread_t monitor;
-	t_philo *philos;
+	int			i;
+	pthread_t	monitor;
+	t_philo		*philos;
 
 	philos = data->philos;
 	data->start_time = get_time();
@@ -36,7 +36,7 @@ int	start_simulation(t_data *data)
 
 void	end_simulation(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->philo_count)
@@ -44,9 +44,7 @@ void	end_simulation(t_data *data)
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
-
-	print_meal_counts(data); // Add this line
-
+	print_meal_counts(data);
 	i = 0;
 	while (i < data->philo_count)
 	{
@@ -61,8 +59,8 @@ void	end_simulation(t_data *data)
 
 static	int	check_args(int argc, char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (argc != 5 && argc != 6)
 		return (1);
@@ -81,30 +79,37 @@ static	int	check_args(int argc, char **argv)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+static	int	handle_errors(t_data *data, int argc, char **argv)
 {
-	t_data data;
-
 	if (check_args(argc, argv))
 	{
 		printf("Error: Invalid arguments\n");
 		return (1);
 	}
-	if (init_data(&data, argc, argv))
+	if (init_data(data, argc, argv))
 	{
 		printf("Error: Invalid values\n");
 		return (1);
 	}
-	if (init_mutex(&data) || init_philos(&data))
+	if (init_mutex(data) || init_philos(data))
 	{
 		printf("Error: Initialization failed\n");
 		return (1);
 	}
-	if (start_simulation(&data))
+	if (start_simulation(data))
 	{
 		printf("Error: Thread creation failed\n");
 		return (1);
 	}
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	data;
+
+	if (handle_errors(&data, argc, argv))
+		return (1);
 	while (!data.dead)
 		;
 	end_simulation(&data);
