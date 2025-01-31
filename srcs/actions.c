@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:57 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/31 15:57:33 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/01/31 19:04:25 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,18 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->data->philo_count == 1)
+	{
+		print_status(philo->data, philo->id, "has taken a fork");
+		smart_sleep(philo->data->time_to_die, philo->data);
+		return (NULL);
+	}
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (!philo->data->dead)
 	{
-		if (philo->data->must_eat_count != -1 && philo
-			->ate_count >= philo->data->must_eat_count)
+		if (philo->data->must_eat_count != -1
+			&& philo->ate_count >= philo->data->must_eat_count)
 			break ;
 		eat(philo);
 		sleep_think(philo);
