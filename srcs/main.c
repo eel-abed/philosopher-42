@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:35 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/31 15:35:16 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/03 21:13:16 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	end_simulation(t_data *data)
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
-	print_meal_counts(data);
+	// print_meal_counts(data);
 	i = 0;
 	while (i < data->philo_count)
 	{

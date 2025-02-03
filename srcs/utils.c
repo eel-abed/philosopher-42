@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:03 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/30 19:30:55 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/03 20:50:20 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	smart_sleep(long long time, t_data *data)
 	long long	start;
 
 	start = get_time();
-	while (!data->dead)
+	while (!int_getter(&data->meal_check, &data->dead))
 	{
 		if (get_time() - start >= time)
 			break ;

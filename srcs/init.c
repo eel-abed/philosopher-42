@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:42 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/01/31 16:00:30 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:05:35 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	init_mutex(t_data *data)
 	if (pthread_mutex_init(&data->writing, NULL))
 		return (1);
 	if (pthread_mutex_init(&data->meal_check, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->ate_count_mtx, NULL))
 		return (1);
 	return (0);
 }
