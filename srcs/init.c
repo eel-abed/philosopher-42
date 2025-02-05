@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:42 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/02/03 22:05:35 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:29:52 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,28 @@ int	init_philos(t_data *data)
 		i++;
 	}
 	return (0);
+}
+
+void	*philo_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	if (philo->data->philo_count == 1)
+	{
+		print_status(philo->data, philo->id, "has taken a fork");
+		smart_sleep(philo->data->time_to_die, philo->data);
+		return (NULL);
+	}
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while (!int_getter(&philo->data->meal_check, &philo->data->dead))
+	{
+		if (philo->data->must_eat_count != -1
+			&& philo->ate_count >= philo->data->must_eat_count)
+			break ;
+		eat(philo);
+		sleep_think(philo);
+	}
+	return (NULL);
 }

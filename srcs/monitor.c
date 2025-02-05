@@ -6,22 +6,23 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:10 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/02/03 22:19:43 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:24:57 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int check_if_all_ate(t_data *data)
+static int	check_if_all_ate(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (data->must_eat_count == -1)
 		return (0);
 	i = 0;
 	while (i < data->philo_count)
 	{
-		if (int_getter(&data->ate_count_mtx, &data->philos[i].ate_count) < data->must_eat_count)
+		if (int_getter(&data->ate_count_mtx,
+				&data->philos[i].ate_count) < data->must_eat_count)
 			return (0);
 		i++;
 	}
@@ -29,12 +30,12 @@ static int check_if_all_ate(t_data *data)
 	return (1);
 }
 
-void *monitor_routine(void *arg)
+void	*monitor_routine(void *arg)
 {
-	t_data *data;
-	int i;
-	data = (t_data *)arg;
+	t_data	*data;
+	int		i;
 
+	data = (t_data *)arg;
 	while (!int_getter(&data->meal_check, &data->dead))
 	{
 		i = 0;
@@ -45,30 +46,15 @@ void *monitor_routine(void *arg)
 			i++;
 		}
 		if (check_if_all_ate(data))
-			break;
+			break ;
 		usleep(1000);
 	}
 	return (NULL);
 }
 
-void print_meal_counts(t_data *data)
+int	int_getter(pthread_mutex_t *mtx, int *value)
 {
-	int i;
-
-	printf("\n--- Final meal counts ---\n");
-	i = 0;
-	while (i < data->philo_count)
-	{
-		printf("Philosopher %d ate %d times\n",
-			   data->philos[i].id, data->philos[i].ate_count);
-		i++;
-	}
-	printf("------------------------\n");
-}
-
-int		int_getter(pthread_mutex_t *mtx, int *value)
-{
-	int tmp;
+	int	tmp;
 
 	pthread_mutex_lock(mtx);
 	tmp = *value;
@@ -76,7 +62,7 @@ int		int_getter(pthread_mutex_t *mtx, int *value)
 	return (tmp);
 }
 
-void int_setter(pthread_mutex_t *mtx, int *value, int new_value)
+void	int_setter(pthread_mutex_t *mtx, int *value, int new_value)
 {
 	pthread_mutex_lock(mtx);
 	*value = new_value;

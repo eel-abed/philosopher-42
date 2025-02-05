@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:58:03 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/02/03 20:50:20 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:45:58 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	smart_sleep(long long time, t_data *data)
 int	check_death(t_data *data, t_philo *philo)
 {
 	pthread_mutex_lock(&data->meal_check);
-	if (get_time() - philo->last_meal > data->time_to_die)
+	if (get_time() - philo->last_meal >= data->time_to_die)
 	{
 		print_status(data, philo->id, "died");
 		data->dead = 1;
