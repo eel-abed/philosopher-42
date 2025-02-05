@@ -6,25 +6,64 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:42 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/02/05 17:29:52 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:53:07 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+int	ft_atoi_safe(const char *str, int *result)
+{
+	long long	tmp;
+	int			sign;
+	int			i;
+
+	tmp = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		tmp = tmp * 10 + (str[i] - '0');
+		if ((sign == 1 && tmp > INT_MAX) || (sign == -1 && -tmp < INT_MIN))
+			return (0);
+		i++;
+	}
+	*result = (int)(tmp * sign);
+	return (1);
+}
+
 int	init_data(t_data *data, int argc, char **argv)
 {
-	data->philo_count = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
+	int	tmp;
+
+	if (!ft_atoi_safe(argv[1], &tmp) || tmp <= 0)
+		return (1);
+	data->philo_count = tmp;
+	if (!ft_atoi_safe(argv[2], &tmp) || tmp <= 0)
+		return (1);
+	data->time_to_die = tmp;
+	if (!ft_atoi_safe(argv[3], &tmp) || tmp <= 0)
+		return (1);
+	data->time_to_eat = tmp;
+	if (!ft_atoi_safe(argv[4], &tmp) || tmp <= 0)
+		return (1);
+	data->time_to_sleep = tmp;
 	data->dead = 0;
 	data->must_eat_count = -1;
 	if (argc == 6)
-		data->must_eat_count = ft_atoi(argv[5]);
-	if (data->philo_count < 1 || data->time_to_die < 0 || data->time_to_eat < 0
-		|| data->time_to_sleep < 0 || (argc == 6 && data->must_eat_count < 0))
-		return (1);
+	{
+		if (!ft_atoi_safe(argv[5], &tmp) || tmp < 0)
+			return (1);
+		data->must_eat_count = tmp;
+	}
 	return (0);
 }
 
