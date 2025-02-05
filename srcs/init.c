@@ -6,7 +6,7 @@
 /*   By: eel-abed <eel-abed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:42 by eel-abed          #+#    #+#             */
-/*   Updated: 2025/02/05 17:53:07 by eel-abed         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:18:52 by eel-abed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_atoi_safe(const char *str, int *result)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		tmp = tmp * 10 + (str[i] - '0');
-		if ((sign == 1 && tmp > INT_MAX) || (sign == -1 && -tmp < INT_MIN))
+		if ((sign == 1 && tmp > INT_MAX) || (sign == -1 && - tmp < INT_MIN))
 			return (0);
 		i++;
 	}
